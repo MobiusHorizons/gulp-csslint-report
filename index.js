@@ -104,11 +104,14 @@ module.exports = function (opt) {
         });
     }
 
-    function startSection(st, filename, results) {
+    function startSection(st, filename, results, file) {
         //st.write(util.format('<section class="panel panel-%s">', results.length > 0 ? "danger" : "success"));
         st.write('<div class="panel panel-default">');
         st.write('<div class="panel-heading">');
         st.write(util.format('<h4 class="panel-title"><a href="#%s" data-toggle="collapse" data-parent="#accordion">%s ', i, filename));
+        st.write('<div class="pull-right">');
+        st.write(util.format('<a href="../styles/%s">view source</a>', path.relative(process.cwd(), file.path)));
+        st.write('</div>');
         st.write('<div class="pull-right">');
         if (results.length == 0) st.write('<small class="text-success glyphicon glyphicon-ok-sign"></small>');
         if (results.length > 0) st.write(util.format('<small class="text-danger"><span class="label label-danger">%d</span> errors</small>', results.length));
@@ -169,8 +172,8 @@ module.exports = function (opt) {
 
         totalErrors += results.length;
 
-        startSection(wrStream, fname, results);
-        startSection(stream, fname, results);
+        startSection(wrStream, fname, results, file);
+        startSection(stream, fname, results, file);
 
         if (results.length == 0) {
             wrStream.write('<div class="alert alert-success">Cool!! No errors/warnings found!</div>');
